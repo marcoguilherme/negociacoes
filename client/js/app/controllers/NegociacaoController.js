@@ -16,11 +16,9 @@ class NegociacaoController {
         
         event.preventDefault(); //Cancela refresh ao clicar em incluir
 
-        let helper = new DateHelper();
-
         //Define os parametros que serao passadas para a model Negociacao
         let negociacao = new Negociacao(
-            helper.textoParaData(this._inputData.value),
+            DateHelper.textoParaData(this._inputData.value),
             this._inputQuantidade.value,
             this._inputValor.value
         )
