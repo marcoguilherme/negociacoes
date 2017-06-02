@@ -28,10 +28,14 @@ class NegociacaoController {
         
         event.preventDefault(); //Cancela refresh ao clicar em incluir
 
-        //Adicionar negociacao em uma lista
-        this._listaNegociacoes.adiciona(this._criaNegociacao());
-        this._limpaFormulario();
-        this._mensagem.texto = "Negociacao criada do sucesso!";
+        try{
+            //Adicionar negociacao em uma lista
+            this._listaNegociacoes.adiciona(this._criaNegociacao());
+            this._limpaFormulario();
+            this._mensagem.texto = "Negociacao criada do sucesso!";
+        }catch(error){
+            this._mensagem.texto = error;
+        }
         
     }
 
