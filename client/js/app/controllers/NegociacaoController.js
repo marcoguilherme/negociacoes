@@ -33,25 +33,19 @@ class NegociacaoController {
         
     }
 
-    importaNegociacoes(event){
-        event.preventDefault();
-        let xhr = new XMLHttpRequest();
-        xhr.open('GET', 'negociacoes/semana');
+    importaNegociacoes() {
 
-        xhr.onreadystatechange = () => {
-            if(xhr.readyState == 4 && xhr.status == 200){
-                JSON.parse(xhr.responseText)
-                    .map((response) => new Negociacao(new Date(response.data), response.quantidade, response.valor))
-                    .forEach(negociacao => this._listaNegociacoes.adiciona(negociacao))
-                this._mensagem.texto = "Negociacoes importadas com sucesso";
+        let service = new NegociacaoService();
 
-            }else{
-                console.log(xhr.responseText);
-                this._mensagem.texto = "Nao foi possivel realizar importacao";
+        service.obterNegociacoesDaSemana((err, negociacoes) => {
+            if(err) {
+                this._mensagem.texto = err;
+                return;
             }
-        }
 
-        xhr.send();
+            negociacoes.forEach(negociacao => this._listaNegociacoes.adiciona(negociacao));
+            this._mensagem.texto = 'Negociações importadas com sucesso';
+        });
     }
 
     //Define os parametros que serao passadas para a model Negociacao
