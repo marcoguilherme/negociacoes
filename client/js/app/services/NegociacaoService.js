@@ -55,4 +55,55 @@ class NegociacaoService {
                 })
         })
     }
+
+    obterNegociacoes(){
+        return Promise.all([
+            this.obterNegociacoesDaSemana(),
+            this.obterNegociacoesDaSemanaAnterior(),
+            this.obterNegociacoesDaSemanaRetrasada()
+        ]).then(periodos => {
+
+            let negociacoes = periodos
+                .reduce((dados, periodo) => dados.concat(periodo), [])
+                .map(dado => new Negociacao(new Date(dado.data), dado.quantidade, dado.valor ));
+
+            return negociacoes;
+        }).catch(erro => {
+            throw new Error(erro);
+        });
+    }
+
+    cadastra(negociacao){
+        return ConnectionFactory
+            .getConnection()
+            .then(conexao => new NegociacaoDao(conexao))
+            .then(dao => dao.adiciona(negociacao))
+            .then(() => 'Negociação cadastrada com sucesso')
+            .catch(erro => {
+                throw new Error("Não foi possível adicionar a negociação")
+            });
+    }
+    lista(){
+        return ConnectionFactory
+            .getConnection()
+            .then(conexao => new NegociacaoDao(conexao))
+            .then(dao => dao.listaTodos())
+    }
+    apaga(){
+        return ConnectionFactory
+            .getConnection()
+            .then(connection => new NegociacaoDao(connection))
+            .then(dao => dao.apagaTodos())
+    }
+
+    importa(listaAtual){
+        return this.obterNegociacoes()
+            .then(negociacoes =>
+                negociacoes.filter(negocicao =>
+                    !listaAtual.some(negociacaoExistente =>
+                        JSON.stringify(negocicao) == JSON.stringify(negociacaoExistente)))
+            )
+            .catch(()=> {throw new Error("Nao foi possivel importar negociacoes")})
+    }
+    
 }
