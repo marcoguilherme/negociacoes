@@ -45,7 +45,8 @@
     <br>
 
     <div id="negociacoesView"></div>
-    
+    <script src="js/app/polyfill/es6.js"></script> <!-- funcionar no EDGE -->
+    <script src="js/app/polyfill/fetch.js"></script> <!-- funcionar o fetch -->
     <script src="js/app/models/Negociacao.js"></script>
     <script src="js/app/models/ListaNegociacoes.js"></script>
     <script src="js/app/models/Mensagem.js"></script>
@@ -60,8 +61,6 @@
     <script src="js/app/services/NegociacaoService.js"></script>
     <script src="js/app/services/ConnectionFactory.js"></script>
     <script src="js/app/dao/NegociacaoDao.js"></script>
-    <script src="js/app/polyfill/es6.js"></script> <!-- funcionar no EDGE -->
-    <script src="js/app/polyfill/fetch.js"></script> <!-- funcionar o fetch -->
     <script>
         var negociacaoController = new NegociacaoController(); //Foi usado var apenas nessa parte do codigo para funcionar no safari
     </script>
