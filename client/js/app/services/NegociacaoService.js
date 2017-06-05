@@ -1,14 +1,23 @@
 'use strict';
 
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.NegociacaoService = undefined;
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _Negociacao = require('../models/Negociacao');
+
+var _HttpService = require('HttpService');
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var NegociacaoService = function () {
+var NegociacaoService = exports.NegociacaoService = function () {
     function NegociacaoService() {
         _classCallCheck(this, NegociacaoService);
 
-        this._http = new HttpService();
+        this._http = new _HttpService.HttpService();
     }
 
     _createClass(NegociacaoService, [{
@@ -21,7 +30,7 @@ var NegociacaoService = function () {
                 _this._http.get('negociacoes/semana').then(function (negociacoes) {
                     console.log(negociacoes);
                     resolve(negociacoes.map(function (objeto) {
-                        return new Negociacao(new Date(objeto.data), objeto.quantidade, objeto.valor);
+                        return new _Negociacao.Negociacao(new Date(objeto.data), objeto.quantidade, objeto.valor);
                     }));
                 }).catch(function (error) {
                     console.log(error);
@@ -39,7 +48,7 @@ var NegociacaoService = function () {
                 _this2._http.get('negociacoes/anterior').then(function (negociacoes) {
                     console.log(negociacoes);
                     resolve(negociacoes.map(function (objeto) {
-                        return new Negociacao(new Date(objeto.data), objeto.quantidade, objeto.valor);
+                        return new _Negociacao.Negociacao(new Date(objeto.data), objeto.quantidade, objeto.valor);
                     }));
                 }).catch(function (error) {
                     console.log(error);
@@ -57,7 +66,7 @@ var NegociacaoService = function () {
                 _this3._http.get('negociacoes/retrasada').then(function (negociacoes) {
                     console.log(negociacoes);
                     resolve(negociacoes.map(function (objeto) {
-                        return new Negociacao(new Date(objeto.data), objeto.quantidade, objeto.valor);
+                        return new _Negociacao.Negociacao(new Date(objeto.data), objeto.quantidade, objeto.valor);
                     }));
                 }).catch(function (error) {
                     console.log(error);
@@ -73,7 +82,7 @@ var NegociacaoService = function () {
                 var negociacoes = periodos.reduce(function (dados, periodo) {
                     return dados.concat(periodo);
                 }, []).map(function (dado) {
-                    return new Negociacao(new Date(dado.data), dado.quantidade, dado.valor);
+                    return new _Negociacao.Negociacao(new Date(dado.data), dado.quantidade, dado.valor);
                 });
 
                 return negociacoes;
