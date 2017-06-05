@@ -1,5 +1,5 @@
 import { Negociacao } from '../models/Negociacao';
-import { HttpService } from 'HttpService';
+import { HttpService } from './HttpService';
 import { ConnectionFactory } from './ConnectionFactory';
 import { NegociacaoDao } from '../dao/NegociacaoDao';
 

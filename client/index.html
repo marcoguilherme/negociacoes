@@ -11,7 +11,7 @@
     
     <h1 class="text-center">Negociações</h1>
     
-    <form class="form" onsubmit="negociacaoController.adiciona(event)">
+    <form class="form">
         
         <div id="mensagemView"></div>
         
@@ -34,10 +34,10 @@
     </form>
     
     <div class="text-center">
-        <button onclick="negociacaoController.importaNegociacoes(event)" class="btn btn-primary text-center" type="button">
+        <button class="btn btn-primary text-center importar" type="button">
             Importar Negociações
         </button>
-        <button onclick="negociacaoController.esvazia(event)" class="btn btn-primary text-center" type="button">
+        <button class="btn btn-primary text-center apagar" type="button">
             Apagar
         </button>
     </div> 
@@ -45,24 +45,13 @@
     <br>
 
     <div id="negociacoesView"></div>
-    <script src="js/app/polyfill/es6.js"></script> <!-- funcionar no EDGE -->
-    <script src="js/app/polyfill/fetch.js"></script> <!-- funcionar o fetch -->
-    <script src="js/app/models/Negociacao.js"></script>
-    <script src="js/app/models/ListaNegociacoes.js"></script>
-    <script src="js/app/models/Mensagem.js"></script>
-    <script src="js/app/Helpers/DateHelper.js"></script>
-    <script src="js/app/Helpers/Bind.js"></script>
-    <script src="js/app/controllers/NegociacaoController.js"></script>
-    <script src="js/app/views/View.js"></script>
-    <script src="js/app/views/NegociacoesView.js"></script>
-    <script src="js/app/views/MensagemView.js"></script>
-    <script src="js/app/services/ProxyFactory.js"></script>
-    <script src="js/app/services/HttpService.js"></script>
-    <script src="js/app/services/NegociacaoService.js"></script>
-    <script src="js/app/services/ConnectionFactory.js"></script>
-    <script src="js/app/dao/NegociacaoDao.js"></script>
+
+    <script src="node_modules/systemjs/dist/system.js"></script>
     <script>
-        var negociacaoController = new NegociacaoController(); //Foi usado var apenas nessa parte do codigo para funcionar no safari
+        System.defaultJSExtensions = true;
+        System.import('js/app/boot').catch(function(err){
+            console.error(err);
+        });
     </script>
 </body>
 </html>

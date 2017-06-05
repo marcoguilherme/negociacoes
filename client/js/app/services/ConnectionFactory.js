@@ -1,74 +1,103 @@
 "use strict";
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
+System.register([], function (_export, _context) {
+    "use strict";
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+    var _createClass, stores, version, dbName, connection, close, ConnectionFactory;
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var stores = ['negociacoes'];
-var version = 4;
-var dbName = "aluraframe";
-var connection = null;
-var close = null;
-
-var ConnectionFactory = exports.ConnectionFactory = function () {
-    function ConnectionFactory() {
-        _classCallCheck(this, ConnectionFactory);
-
-        throw new Error("Nao e possivel instanciar ConnectionFactory");
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+            throw new TypeError("Cannot call a class as a function");
+        }
     }
 
-    _createClass(ConnectionFactory, null, [{
-        key: "getConnection",
-        value: function getConnection() {
-            return new Promise(function (resolve, reject) {
-                var openRequest = window.indexedDB.open(dbName, version);
+    return {
+        setters: [],
+        execute: function () {
+            _createClass = function () {
+                function defineProperties(target, props) {
+                    for (var i = 0; i < props.length; i++) {
+                        var descriptor = props[i];
+                        descriptor.enumerable = descriptor.enumerable || false;
+                        descriptor.configurable = true;
+                        if ("value" in descriptor) descriptor.writable = true;
+                        Object.defineProperty(target, descriptor.key, descriptor);
+                    }
+                }
 
-                openRequest.onupgradeneeded = function (e) {
-                    ConnectionFactory._createStores(e.target.result);
+                return function (Constructor, protoProps, staticProps) {
+                    if (protoProps) defineProperties(Constructor.prototype, protoProps);
+                    if (staticProps) defineProperties(Constructor, staticProps);
+                    return Constructor;
                 };
+            }();
 
-                openRequest.onsuccess = function (e) {
-                    console.log("Conexao obtida com o banco");
-                    if (!connection) {
-                        connection = e.target.result;
-                        close = connection.close.bind(connection);
-                        connection.close = function () {
-                            throw new Error("Voce nao pode encerrar a conexao");
-                        };
-                    };
-                    resolve(e.target.result);
-                };
+            stores = ['negociacoes'];
+            version = 4;
+            dbName = "aluraframe";
+            connection = null;
+            close = null;
 
-                openRequest.onerror = function (e) {
-                    console.log(e.target.error);
-                    reject(e.target.error.name);
-                };
-            });
+            _export("ConnectionFactory", ConnectionFactory = function () {
+                function ConnectionFactory() {
+                    _classCallCheck(this, ConnectionFactory);
+
+                    throw new Error("Nao e possivel instanciar ConnectionFactory");
+                }
+
+                _createClass(ConnectionFactory, null, [{
+                    key: "getConnection",
+                    value: function getConnection() {
+                        return new Promise(function (resolve, reject) {
+                            var openRequest = window.indexedDB.open(dbName, version);
+
+                            openRequest.onupgradeneeded = function (e) {
+                                ConnectionFactory._createStores(e.target.result);
+                            };
+
+                            openRequest.onsuccess = function (e) {
+                                console.log("Conexao obtida com o banco");
+                                if (!connection) {
+                                    connection = e.target.result;
+                                    close = connection.close.bind(connection);
+                                    connection.close = function () {
+                                        throw new Error("Voce nao pode encerrar a conexao");
+                                    };
+                                };
+                                resolve(e.target.result);
+                            };
+
+                            openRequest.onerror = function (e) {
+                                console.log(e.target.error);
+                                reject(e.target.error.name);
+                            };
+                        });
+                    }
+                }, {
+                    key: "_createStores",
+                    value: function _createStores(connection) {
+                        stores.forEach(function (store) {
+                            if (connection.result.objectStoreNames.contains(store)) connection.result.deleteObjectStore(store);
+
+                            connection.result.createObjectStore(store, { autoIncrement: true });
+                        });
+                    }
+                }, {
+                    key: "closeConnection",
+                    value: function closeConnection() {
+
+                        if (connection) {
+                            close();
+                            connection = null;
+                        }
+                    }
+                }]);
+
+                return ConnectionFactory;
+            }());
+
+            _export("ConnectionFactory", ConnectionFactory);
         }
-    }, {
-        key: "_createStores",
-        value: function _createStores(connection) {
-            stores.forEach(function (store) {
-                if (connection.result.objectStoreNames.contains(store)) connection.result.deleteObjectStore(store);
-
-                connection.result.createObjectStore(store, { autoIncrement: true });
-            });
-        }
-    }, {
-        key: "closeConnection",
-        value: function closeConnection() {
-
-            if (connection) {
-                close();
-                connection = null;
-            }
-        }
-    }]);
-
-    return ConnectionFactory;
-}();
+    };
+});
 //# sourceMappingURL=ConnectionFactory.js.map
