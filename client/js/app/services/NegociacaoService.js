@@ -11,6 +11,10 @@ var _Negociacao = require('../models/Negociacao');
 
 var _HttpService = require('HttpService');
 
+var _ConnectionFactory = require('./ConnectionFactory');
+
+var _NegociacaoDao = require('../dao/NegociacaoDao');
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var NegociacaoService = exports.NegociacaoService = function () {
@@ -93,8 +97,8 @@ var NegociacaoService = exports.NegociacaoService = function () {
     }, {
         key: 'cadastra',
         value: function cadastra(negociacao) {
-            return ConnectionFactory.getConnection().then(function (conexao) {
-                return new NegociacaoDao(conexao);
+            return _ConnectionFactory.ConnectionFactory.getConnection().then(function (conexao) {
+                return new _NegociacaoDao.NegociacaoDao(conexao);
             }).then(function (dao) {
                 return dao.adiciona(negociacao);
             }).then(function () {
@@ -106,8 +110,8 @@ var NegociacaoService = exports.NegociacaoService = function () {
     }, {
         key: 'lista',
         value: function lista() {
-            return ConnectionFactory.getConnection().then(function (conexao) {
-                return new NegociacaoDao(conexao);
+            return _ConnectionFactory.ConnectionFactory.getConnection().then(function (conexao) {
+                return new _NegociacaoDao.NegociacaoDao(conexao);
             }).then(function (dao) {
                 return dao.listaTodos();
             });
@@ -115,8 +119,8 @@ var NegociacaoService = exports.NegociacaoService = function () {
     }, {
         key: 'apaga',
         value: function apaga() {
-            return ConnectionFactory.getConnection().then(function (connection) {
-                return new NegociacaoDao(connection);
+            return _ConnectionFactory.ConnectionFactory.getConnection().then(function (connection) {
+                return new _NegociacaoDao.NegociacaoDao(connection);
             }).then(function (dao) {
                 return dao.apagaTodos();
             });
